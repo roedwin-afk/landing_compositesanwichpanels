@@ -1,0 +1,273 @@
+---
+import type { TranslationKeys } from "../../i18n/en";
+import type { Lang } from "../../i18n/utils";
+import { Thermometer, FlameKindling, TriangleAlert, Scale } from "lucide-astro";
+
+interface Props {
+  t: TranslationKeys;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+
+const buttons = [
+  { key: "thermal", label: t.finder.thermal, icon: "thermal" },
+  { key: "fire",    label: t.finder.fire,    icon: "fire"    },
+  { key: "temp",    label: t.finder.temp,    icon: "temp"    },
+  { key: "cost",    label: t.finder.cost,    icon: "cost"    },
+];
+
+const recommendations = {
+  thermal: { title: t.finder.rec_thermal_title, desc: t.finder.rec_thermal_desc },
+  fire:    { title: t.finder.rec_fire_title,    desc: t.finder.rec_fire_desc    },
+  temp:    { title: t.finder.rec_temp_title,    desc: t.finder.rec_temp_desc    },
+  cost:    { title: t.finder.rec_cost_title,    desc: t.finder.rec_cost_desc    },
+};
+
+const recsJSON = JSON.stringify(recommendations);
+---
+
+<section class="finder">
+  <div class="container">
+    <div class="finder__card reveal">
+      <div class="finder__intro">
+        <span class="finder__label">{t.finder.label}</span>
+        <h3 class="finder__title">{t.finder.title}</h3>
+        <p class="finder__desc">{t.finder.description}</p>
+      </div>
+
+      <div class="finder__controls">
+        <div class="finder__buttons">
+          {buttons.map((btn) => (
+            <button class="finder-btn" data-priority={btn.key} aria-pressed="false">
+              <span class="finder-btn__icon">
+                {btn.icon === "thermal" && <Thermometer size={22} />}
+                {btn.icon === "fire"    && <FlameKindling size={22} />}
+                {btn.icon === "temp"    && <TriangleAlert size={22} />}
+                {btn.icon === "cost"    && <Scale size={22} />}
+              </span>
+              <span class="finder-btn__label">{btn.label}</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="finder__recommendation hidden" id="finder-recommendation" role="alert">
+          <span class="rec__icon">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+          <div>
+            <h4 class="rec__title" id="rec-title"></h4>
+            <p class="rec__desc" id="rec-desc"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ recsJSON }}>
+  const recommendations = JSON.parse(recsJSON);
+
+  function initFinder() {
+    const buttons = document.querySelectorAll(".finder-btn");
+    const banner = document.getElementById("finder-recommendation");
+    const recTitle = document.getElementById("rec-title");
+    const recDesc = document.getElementById("rec-desc");
+
+    if (!buttons.length || !banner || !recTitle || !recDesc) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const priority = btn.dataset.priority;
+        const rec = recommendations[priority];
+        if (!rec) return;
+
+        buttons.forEach((b) => {
+          b.classList.remove("is-active");
+          b.setAttribute("aria-pressed", "false");
+        });
+        btn.classList.add("is-active");
+        btn.setAttribute("aria-pressed", "true");
+
+        recTitle.textContent = rec.title;
+        recDesc.textContent = rec.desc;
+        banner.classList.remove("hidden");
+
+        const materialsSection = document.getElementById("materials");
+        if (materialsSection) {
+          setTimeout(() => {
+            materialsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 300);
+        }
+      });
+    });
+
+    // Activa el primer botón por defecto sin scroll
+    const first = buttons[0];
+    if (first) {
+      const priority = first.dataset.priority;
+      const rec = recommendations[priority];
+      if (rec) {
+        first.classList.add("is-active");
+        first.setAttribute("aria-pressed", "true");
+        recTitle.textContent = rec.title;
+        recDesc.textContent = rec.desc;
+        banner.classList.remove("hidden");
+      }
+    }
+  }
+
+  initFinder();
+  document.addEventListener("astro:page-load", initFinder);
+</script>
+
+<style>
+  .finder {
+    padding-block: var(--space-12);
+    background-color: var(--color-slate-100);
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  .finder__card {
+    background-color: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-8);
+    box-shadow: var(--shadow-md);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .finder__card {
+      grid-template-columns: 4fr 8fr;
+    }
+  }
+
+  .finder__label {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-amber-500);
+    margin-bottom: var(--space-2);
+  }
+
+  .finder__title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-navy-800);
+    margin-bottom: var(--space-3);
+  }
+
+  .finder__desc {
+    font-size: var(--text-sm);
+    color: var(--color-slate-600);
+    line-height: 1.6;
+  }
+
+  .finder__buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .finder__buttons {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .finder-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    border: 2px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    height: 7rem;
+    text-align: left;
+    background-color: white;
+    transition:
+      border-color var(--transition-base),
+      background-color var(--transition-base),
+      box-shadow var(--transition-base);
+  }
+
+  .finder-btn:hover {
+    border-color: var(--color-navy-500);
+    background-color: var(--color-slate-50);
+  }
+
+  .finder-btn.is-active {
+    border-color: var(--color-amber-500);
+    background-color: #fffbeb;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+  }
+
+  .finder-btn__icon {
+    color: var(--color-slate-500);
+    transition: color var(--transition-base);
+  }
+
+  .finder-btn:hover .finder-btn__icon,
+  .finder-btn.is-active .finder-btn__icon {
+    color: var(--color-amber-500);
+  }
+
+  .finder-btn__label {
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    color: var(--color-slate-700);
+    line-height: 1.3;
+  }
+
+  .finder__recommendation {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background-color: #f0f5ff;
+    border: 1px solid #c7d7f5;
+    border-radius: var(--radius-lg);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .finder__recommendation.hidden {
+    display: none;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0);   }
+  }
+
+  .rec__icon {
+    color: var(--color-navy-800);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .rec__title {
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    color: var(--color-navy-800);
+    margin-bottom: var(--space-1);
+  }
+
+  .rec__desc {
+    font-size: var(--text-xs);
+    color: var(--color-slate-600);
+    line-height: 1.5;
+  }
+</style>

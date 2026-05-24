@@ -1,17 +1,21 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/sections/Hero.astro";
+import Finder from "../components/sections/Finder.astro";
+import Comparison from "../components/sections/Comparison.astro";
+import ScrollReveal from "../components/ui/ScrollReveal.astro";
+import { getLang, useTranslations } from "../i18n/utils";
 
+const base = import.meta.env.BASE_URL;
+const lang = getLang(Astro.url, base);
+const t = useTranslations(lang);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout t={t} lang={lang}>
+  <ScrollReveal />
+  <main>
+    <Hero t={t} lang={lang} />
+    <Finder t={t} lang={lang} />
+    <Comparison t={t} lang={lang} />
+  </main>
+</BaseLayout>

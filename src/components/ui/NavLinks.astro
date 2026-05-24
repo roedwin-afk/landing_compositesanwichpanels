@@ -1,0 +1,90 @@
+---
+import type { TranslationKeys } from "../../i18n/en";
+import type { Lang } from "../../i18n/utils";
+
+interface Props {
+  t: TranslationKeys;
+  lang: Lang;
+  orientation?: "horizontal" | "vertical";
+  onClickClose?: boolean;
+}
+
+const { t, lang, orientation = "horizontal", onClickClose = false } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const prefix = lang === "es" ? `${base}es/` : base;
+
+const links = [
+  { href: `${prefix}#materials`, label: t.nav.materials },
+  { href: `${prefix}#comparison`, label: t.nav.comparison },
+  { href: `${prefix}#performance`, label: t.nav.performance },
+  { href: `${prefix}#standards`, label: t.nav.standards },
+];
+---
+
+<ul
+  class:list={[
+    "nav-links",
+    orientation === "vertical" ? "nav-links--vertical" : "nav-links--horizontal",
+  ]}
+>
+  {
+    links.map((link) => (
+      <li>
+        
+        <a  href={link.href}
+          class="nav-link"
+          data-close={onClickClose ? "true" : undefined}
+        >
+          {link.label}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .nav-links {
+    display: flex;
+    gap: var(--space-8);
+  }
+
+  .nav-links--horizontal {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .nav-links--vertical {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .nav-link {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-slate-300);
+    transition: color var(--transition-base);
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: var(--color-amber-500);
+  }
+
+  .nav-links--vertical .nav-link {
+    display: block;
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--color-slate-200);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    transition:
+      color var(--transition-base),
+      background-color var(--transition-base);
+  }
+
+  .nav-links--vertical .nav-link:hover {
+    color: var(--color-amber-500);
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+</style>

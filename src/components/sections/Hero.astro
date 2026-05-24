@@ -1,0 +1,594 @@
+---
+import type { TranslationKeys } from "../../i18n/en";
+import type { Lang } from "../../i18n/utils";
+
+interface Props {
+  t: TranslationKeys;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const prefix = lang === "es" ? `${base}es/` : base;
+
+const coreVisualData = {
+  pur: {
+    title: "PUR CORE",
+    spec: "λ = 0.022 W/m·K",
+    name: t.materials.pur.title,
+    description: t.materials.pur.adv_1,
+    color: "#F59E0B",
+    shadow: "0 0 15px rgba(245, 158, 11, 0.4)",
+  },
+  pir: {
+    title: "PIR CORE",
+    spec: "λ = 0.020 W/m·K",
+    name: t.materials.pir.title,
+    description: t.materials.pir.adv_1,
+    color: "#D97706",
+    shadow: "0 0 15px rgba(217, 119, 6, 0.4)",
+  },
+  rw: {
+    title: "ROCKWOOL CORE",
+    spec: "Max Temp ≥ 750°C",
+    name: t.materials.rw.title,
+    description: t.materials.rw.adv_1,
+    color: "#EF4444",
+    shadow: "0 0 15px rgba(239, 68, 68, 0.4)",
+  },
+};
+
+const coreDataJSON = JSON.stringify(coreVisualData);
+---
+
+<section class="hero technical-grid">
+  <div class="hero__radial"></div>
+  <div class="container">
+    <div class="hero__grid">
+
+      <!-- Left Content -->
+      <div class="hero__content">
+
+        <!-- Badge -->
+        <div class="hero__badge reveal">
+          <span class="badge__dot">
+            <span class="badge__ping"></span>
+            <span class="badge__core"></span>
+          </span>
+          <span>{t.hero.badge}</span>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="hero__title reveal reveal-delay-1">
+          {t.hero.title_1}<br />
+          <span class="hero__title--gradient">{t.hero.title_2}</span>
+        </h1>
+
+        <!-- Description -->
+        <p class="hero__description reveal reveal-delay-2">
+          {t.hero.description}
+        </p>
+
+        <!-- CTAs -->
+        <div class="hero__ctas reveal reveal-delay-3">
+          <a href={`${prefix}#download`} class="cta-primary">
+            {t.hero.cta_primary}
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </a>
+          <a href={`${prefix}#comparison`} class="cta-secondary">
+            {t.hero.cta_secondary}
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="hero__stats reveal reveal-delay-4">
+          <div class="stat">
+            <span class="stat__value">{t.hero.stat_1_value}</span>
+            <span class="stat__label">{t.hero.stat_1_label}</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value">{t.hero.stat_2_value}</span>
+            <span class="stat__label">{t.hero.stat_2_label}</span>
+          </div>
+          <div class="stat">
+            <span class="stat__value">{t.hero.stat_3_value}</span>
+            <span class="stat__label">{t.hero.stat_3_label}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual -->
+      <div class="hero__visual reveal reveal-delay-2">
+        <div class="visual-card">
+
+          <!-- Technical label -->
+          <span class="visual-card__label">{t.hero.visual_label}</span>
+
+          <!-- Core Selector Buttons -->
+          <div class="core-selector">
+            <span class="core-selector__hint">{t.hero.visual_preview}</span>
+            <div class="core-selector__buttons">
+              <button class="core-btn is-active" data-core="pur">PUR</button>
+              <button class="core-btn" data-core="pir">PIR</button>
+              <button class="core-btn" data-core="rw">Rockwool</button>
+            </div>
+          </div>
+
+          <!-- Exploded Panel Diagram -->
+          <div class="panel-diagram">
+            <!-- Top sheet -->
+            <div class="panel-sheet panel-sheet--top">
+              <span class="panel-sheet__label">{t.hero.core_external}</span>
+            </div>
+
+            <!-- Core block -->
+            <div class="panel-core" id="visual-core-block">
+              <span class="panel-core__title" id="visual-core-title">PUR CORE</span>
+              <span class="panel-core__spec" id="visual-core-spec">λ = 0.022 W/m·K</span>
+            </div>
+
+            <!-- Bottom sheet -->
+            <div class="panel-sheet panel-sheet--bottom">
+              <span class="panel-sheet__label">{t.hero.core_internal}</span>
+            </div>
+          </div>
+
+          <!-- Description box -->
+          <div class="visual-desc" id="visual-description-box">
+            <div class="visual-desc__row">
+              <span class="visual-desc__key">Active Selection:</span>
+              <span class="visual-desc__value" id="vis-details-name">{t.materials.pur.title}</span>
+            </div>
+            <p class="visual-desc__text" id="vis-details-p">{t.materials.pur.adv_1}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ coreDataJSON }}>
+  const coreVisualData = JSON.parse(coreDataJSON);
+
+  function switchVisualCore(type) {
+    const data = coreVisualData[type];
+    const coreBlock = document.getElementById("visual-core-block");
+    const coreTitle = document.getElementById("visual-core-title");
+    const coreSpec = document.getElementById("visual-core-spec");
+    const detailsName = document.getElementById("vis-details-name");
+    const detailsP = document.getElementById("vis-details-p");
+
+    if (!coreBlock || !coreTitle || !coreSpec || !detailsName || !detailsP) return;
+
+    coreBlock.style.backgroundColor = data.color;
+    coreBlock.style.boxShadow = data.shadow;
+    coreBlock.style.borderColor = data.color;
+    coreTitle.textContent = data.title;
+    coreSpec.textContent = data.spec;
+    detailsName.textContent = data.name;
+    detailsP.textContent = data.description;
+
+    document.querySelectorAll(".core-btn").forEach((btn) => {
+      if (btn.dataset.core === type) {
+        btn.classList.add("is-active");
+      } else {
+        btn.classList.remove("is-active");
+      }
+    });
+  }
+
+  function initHero() {
+    const buttons = document.querySelectorAll(".core-btn");
+    if (!buttons.length) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        switchVisualCore(btn.dataset.core);
+      });
+    });
+
+    switchVisualCore("pur");
+  }
+
+  initHero();
+  document.addEventListener("astro:page-load", initHero);
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    background: linear-gradient(to bottom, var(--color-navy-950), var(--color-navy-900));
+    color: white;
+    padding-block: var(--space-16) var(--space-24);
+    overflow: hidden;
+  }
+
+  .hero__radial {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .hero__grid {
+      grid-template-columns: 7fr 5fr;
+    }
+  }
+
+  /* Content */
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  /* Badge */
+  .hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background-color: rgba(11, 43, 74, 0.8);
+    border: 1px solid var(--color-steel-700);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-amber-500);
+    width: fit-content;
+  }
+
+  .badge__dot {
+    position: relative;
+    display: inline-flex;
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+  }
+
+  .badge__ping {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--color-amber-400);
+    opacity: 0.75;
+    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .badge__core {
+    position: relative;
+    display: inline-flex;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-amber-500);
+  }
+
+  @keyframes ping {
+    75%, 100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  /* Title */
+  .hero__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-extrabold);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 640px) {
+    .hero__title {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero__title {
+      font-size: var(--text-5xl);
+    }
+  }
+
+  .hero__title--gradient {
+    background: linear-gradient(to right, var(--color-amber-400), var(--color-orange-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Description */
+  .hero__description {
+    font-size: var(--text-lg);
+    color: var(--color-slate-300);
+    font-weight: var(--font-light);
+    max-width: 42rem;
+    line-height: 1.7;
+  }
+
+  /* CTAs */
+  .hero__ctas {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 480px) {
+    .hero__ctas {
+      flex-direction: row;
+    }
+  }
+
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    background: linear-gradient(to right, var(--color-amber-500), var(--color-orange-500));
+    color: var(--color-navy-950);
+    font-weight: var(--font-bold);
+    font-size: var(--text-sm);
+    padding: var(--space-3) var(--space-8);
+    border-radius: var(--radius-lg);
+    transition: opacity var(--transition-base);
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+  }
+
+  .cta-primary:hover {
+    opacity: 0.9;
+  }
+
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: 1px solid var(--color-steel-600);
+    color: var(--color-slate-200);
+    font-weight: var(--font-semibold);
+    font-size: var(--text-sm);
+    padding: var(--space-3) var(--space-8);
+    border-radius: var(--radius-lg);
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .cta-secondary:hover {
+    background-color: var(--color-navy-800);
+    border-color: var(--color-slate-400);
+  }
+
+  /* Stats */
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-steel-800);
+  }
+
+  .stat__value {
+    display: block;
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    font-family: var(--font-mono);
+    color: var(--color-amber-500);
+    line-height: 1.2;
+  }
+
+  @media (min-width: 640px) {
+    .stat__value {
+      font-size: var(--text-2xl);
+    }
+  }
+
+  .stat__label {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-slate-400);
+    margin-top: var(--space-1);
+    line-height: 1.4;
+  }
+
+  /* Visual Card */
+  .hero__visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .visual-card {
+    background-color: rgba(11, 43, 74, 0.5);
+    border: 1px solid rgba(74, 106, 138, 0.4);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6);
+    width: 100%;
+    max-width: 28rem;
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .visual-card__label {
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    color: var(--color-slate-400);
+  }
+
+  /* Core Selector */
+  .core-selector {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+    flex-wrap: wrap;
+  }
+
+  .core-selector__hint {
+    font-size: var(--text-xs);
+    color: var(--color-slate-400);
+  }
+
+  .core-selector__buttons {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .core-btn {
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    font-family: var(--font-mono);
+    color: var(--color-slate-300);
+    background-color: var(--color-navy-950);
+    border: 1px solid transparent;
+    transition:
+      color var(--transition-base),
+      background-color var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .core-btn.is-active {
+    background-color: var(--color-navy-700);
+    color: var(--color-amber-400);
+    border-color: var(--color-amber-500);
+  }
+
+  .core-btn:hover:not(.is-active) {
+    background-color: var(--color-navy-800);
+    color: white;
+  }
+
+  /* Panel Diagram */
+  .panel-diagram {
+    position: relative;
+    height: 16rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-4);
+    perspective: 600px;
+  }
+
+  .panel-sheet {
+    position: absolute;
+    width: 14rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotateX(45deg) rotateZ(-15deg);
+  }
+
+  .panel-sheet--top {
+    background: linear-gradient(to right, #94a3b8, #64748b);
+    border-bottom: 2px solid #475569;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3.5rem) rotateX(45deg) rotateZ(-15deg);
+  }
+
+  .panel-sheet--bottom {
+    background: linear-gradient(to right, #64748b, #475569);
+    border-top: 1px solid #94a3b8;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(3.5rem) rotateX(45deg) rotateZ(-15deg);
+  }
+
+  .panel-sheet__label {
+    font-size: 0.55rem;
+    font-family: var(--font-mono);
+    font-weight: var(--font-bold);
+    color: #1e293b;
+    text-align: center;
+    padding-inline: var(--space-2);
+  }
+
+  .panel-core {
+    position: absolute;
+    width: 13rem;
+    height: 4rem;
+    background-color: var(--color-amber-500);
+    border: 1px solid var(--color-amber-400);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    transform: rotateX(45deg) rotateZ(-15deg);
+    transition:
+      background-color var(--transition-slow),
+      box-shadow var(--transition-slow),
+      border-color var(--transition-slow);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+  }
+
+  .panel-core__title {
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    color: var(--color-navy-950);
+  }
+
+  .panel-core__spec {
+    font-size: 0.6rem;
+    font-family: var(--font-mono);
+    color: var(--color-navy-950);
+    opacity: 0.8;
+  }
+
+  /* Description box */
+  .visual-desc {
+    background-color: rgba(10, 18, 30, 0.8);
+    border: 1px solid var(--color-steel-700);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+  }
+
+  .visual-desc__row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    margin-bottom: var(--space-2);
+  }
+
+  .visual-desc__key {
+    color: var(--color-slate-400);
+  }
+
+  .visual-desc__value {
+    color: var(--color-amber-400);
+    font-weight: var(--font-bold);
+  }
+
+  .visual-desc__text {
+    font-size: var(--text-xs);
+    color: var(--color-slate-300);
+    line-height: 1.5;
+  }
+</style>

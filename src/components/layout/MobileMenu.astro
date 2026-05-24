@@ -1,0 +1,293 @@
+---
+import type { TranslationKeys } from "../../i18n/en";
+import type { Lang } from "../../i18n/utils";
+import NavLinks from "../ui/NavLinks.astro";
+
+interface Props {
+  t: TranslationKeys;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const prefix = lang === "es" ? `${base}es/` : base;
+const alternateLang = lang === "en" ? "es" : "en";
+const alternateHref = lang === "en" ? `${base}es/` : base;
+const alternateLabel = lang === "en" ? "ES" : "EN";
+---
+
+<!-- Overlay -->
+<div
+  id="mobile-overlay"
+  class="mobile-overlay"
+  aria-hidden="true"
+></div>
+
+<!-- Drawer -->
+<div
+  id="mobile-menu"
+  class="mobile-menu"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Navigation menu"
+>
+  <!-- Header del drawer -->
+  <div class="mobile-menu__header">
+    <div class="mobile-menu__brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+          ></path>
+        </svg>
+      </div>
+      <div>
+        <span class="brand-name">COMPOSITE</span>
+        <span class="brand-sub">SANDWICH PANELS</span>
+      </div>
+    </div>
+
+    <button
+      id="mobile-close"
+      class="mobile-menu__close"
+      aria-label="Close menu"
+    >
+      <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Nav Links verticales -->
+  <nav class="mobile-menu__nav">
+    <NavLinks t={t} lang={lang} orientation="vertical" onClickClose={true} />
+  </nav>
+
+  <!-- Divider -->
+  <div class="mobile-menu__divider"></div>
+
+  <!-- Footer del drawer: idioma + CTA -->
+  <div class="mobile-menu__footer">
+    <a href={alternateHref} class="lang-switcher" lang={alternateLang}>
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+      </svg>
+      {alternateLabel}
+    </a>
+
+    <a href={`${prefix}#download`} class="mobile-cta" data-close="true">
+      {t.nav.cta}
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+      </svg>
+    </a>
+  </div>
+</div>
+
+<script>
+  function initMobileMenu() {
+    const toggle = document.getElementById("mobile-toggle");
+    const menu = document.getElementById("mobile-menu");
+    const overlay = document.getElementById("mobile-overlay");
+    const closeBtn = document.getElementById("mobile-close");
+    const closeLinks = document.querySelectorAll("[data-close='true']");
+
+    if (!toggle || !menu || !overlay || !closeBtn) return;
+
+    function openMenu() {
+      menu!.classList.add("is-open");
+      overlay!.classList.add("is-visible");
+      document.body.style.overflow = "hidden";
+      toggle!.setAttribute("aria-expanded", "true");
+    }
+
+    function closeMenu() {
+      menu!.classList.remove("is-open");
+      overlay!.classList.remove("is-visible");
+      document.body.style.overflow = "";
+      toggle!.setAttribute("aria-expanded", "false");
+    }
+
+    toggle.addEventListener("click", () => {
+      const isOpen = menu!.classList.contains("is-open");
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    closeBtn.addEventListener("click", closeMenu);
+    overlay.addEventListener("click", closeMenu);
+
+    closeLinks.forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    // Cerrar con Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu!.classList.contains("is-open")) {
+        closeMenu();
+      }
+    });
+  }
+
+  initMobileMenu();
+  document.addEventListener("astro:page-load", initMobileMenu);
+</script>
+
+<style>
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 18, 30, 0.75);
+    z-index: 90;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity var(--transition-slow);
+  }
+
+  .mobile-overlay.is-visible {
+    display: block;
+    opacity: 1;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100dvh;
+    width: min(320px, 85vw);
+    background-color: var(--color-navy-900);
+    border-left: 1px solid var(--color-steel-800);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-6);
+    transform: translateX(100%);
+    transition: transform var(--transition-slow);
+    overflow-y: auto;
+  }
+
+  .mobile-menu.is-open {
+    transform: translateX(0);
+  }
+
+  /* Header */
+  .mobile-menu__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-8);
+  }
+
+  .mobile-menu__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .brand-icon {
+    background: linear-gradient(135deg, var(--color-navy-500), var(--color-amber-500));
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-name {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    color: white;
+    letter-spacing: 0.1em;
+    line-height: 1;
+  }
+
+  .brand-sub {
+    display: block;
+    font-size: 0.6rem;
+    font-family: var(--font-mono);
+    color: var(--color-slate-400);
+    letter-spacing: 0.15em;
+    margin-top: 2px;
+  }
+
+  .mobile-menu__close {
+    color: var(--color-slate-400);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    transition: color var(--transition-base), background-color var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-menu__close:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Nav */
+  .mobile-menu__nav {
+    flex: 1;
+  }
+
+  /* Divider */
+  .mobile-menu__divider {
+    height: 1px;
+    background-color: var(--color-steel-800);
+    margin-block: var(--space-6);
+  }
+
+  /* Footer */
+  .mobile-menu__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    font-family: var(--font-mono);
+    color: var(--color-slate-300);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-steel-700);
+    border-radius: var(--radius-md);
+    transition:
+      color var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .lang-switcher:hover {
+    color: var(--color-amber-500);
+    border-color: var(--color-amber-500);
+  }
+
+  .mobile-cta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    color: var(--color-navy-950);
+    background: linear-gradient(135deg, var(--color-amber-500), var(--color-orange-500));
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    transition: opacity var(--transition-base);
+  }
+
+  .mobile-cta:hover {
+    opacity: 0.9;
+  }
+</style>
