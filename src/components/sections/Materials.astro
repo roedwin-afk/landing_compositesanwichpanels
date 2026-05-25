@@ -1,0 +1,470 @@
+---
+import type { TranslationKeys } from "../../i18n/en";
+import type { Lang } from "../../i18n/utils";
+import { Factory, ShieldHalf, Mountain, CircleCheck, CircleX } from "lucide-astro";
+
+interface Props {
+  t: TranslationKeys;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const prefix = lang === "es" ? `${base}es/` : base;
+
+const cards = [
+  {
+    id: "card-pur",
+    icon: "factory",
+    fireClass: t.materials.pur.fire_class,
+    title: t.materials.pur.title,
+    subtitle: t.materials.pur.subtitle,
+    metricLabel: t.materials.pur.metric_label,
+    metricValue: t.materials.pur.metric_value,
+    advLabel: t.materials.pur.adv_label,
+    advantages: [t.materials.pur.adv_1, t.materials.pur.adv_2, t.materials.pur.adv_3],
+    limLabel: t.materials.pur.lim_label,
+    limitations: [t.materials.pur.lim_1, t.materials.pur.lim_2],
+    cost: t.materials.pur.cost,
+    variant: "default" as const,
+  },
+  {
+    id: "card-pir",
+    icon: "shield",
+    badge: t.materials.pir.badge,
+    fireClass: t.materials.pir.fire_class,
+    title: t.materials.pir.title,
+    subtitle: t.materials.pir.subtitle,
+    metricLabel: t.materials.pir.metric_label,
+    metricValue: t.materials.pir.metric_value,
+    advLabel: t.materials.pir.adv_label,
+    advantages: [t.materials.pir.adv_1, t.materials.pir.adv_2, t.materials.pir.adv_3],
+    limLabel: t.materials.pir.lim_label,
+    limitations: [t.materials.pir.lim_1, t.materials.pir.lim_2],
+    cost: t.materials.pir.cost,
+    variant: "featured" as const,
+  },
+  {
+    id: "card-rw",
+    icon: "mountain",
+    fireClass: t.materials.rw.fire_class,
+    title: t.materials.rw.title,
+    subtitle: t.materials.rw.subtitle,
+    metricLabel: t.materials.rw.metric_label,
+    metricValue: t.materials.rw.metric_value,
+    advLabel: t.materials.rw.adv_label,
+    advantages: [t.materials.rw.adv_1, t.materials.rw.adv_2, t.materials.rw.adv_3],
+    limLabel: t.materials.rw.lim_label,
+    limitations: [t.materials.rw.lim_1, t.materials.rw.lim_2],
+    cost: t.materials.rw.cost,
+    variant: "default" as const,
+  },
+];
+---
+
+<section id="materials" class="materials">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="materials__header reveal">
+      <span class="section-label">{t.materials.label}</span>
+      <h2 class="section-title">{t.materials.title}</h2>
+      <p class="section-desc">{t.materials.description}</p>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="materials__grid">
+      {cards.map((card, i) => (
+        <div
+          id={card.id}
+          class:list={[
+            "mat-card",
+            card.variant === "featured" && "mat-card--featured",
+            `reveal`,
+            i === 1 && "reveal-delay-2",
+            i === 2 && "reveal-delay-3",
+          ]}
+        >
+          {card.badge && (
+            <div class="mat-card__badge">{card.badge}</div>
+          )}
+
+          <!-- Card Header -->
+          <div class="mat-card__header">
+            <div class:list={["mat-card__icon", card.variant === "featured" && "mat-card__icon--featured"]}>
+              {card.icon === "factory"  && <Factory  size={28} />}
+              {card.icon === "shield"   && <ShieldHalf size={28} />}
+              {card.icon === "mountain" && <Mountain size={28} />}
+            </div>
+            <span class:list={["mat-card__fire-class", card.variant === "featured" && "mat-card__fire-class--featured"]}>
+              {card.fireClass}
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h3 class="mat-card__title">{card.title}</h3>
+          <p class="mat-card__subtitle">{card.subtitle}</p>
+
+          <!-- Metric -->
+          <div class="mat-card__metric">
+            <span class="metric-label">{card.metricLabel}</span>
+            <span class:list={["metric-value", card.variant === "featured" && "metric-value--featured"]}>
+              {card.metricValue}
+            </span>
+          </div>
+
+          <!-- Advantages -->
+          <div class="mat-card__list-group">
+            <span class:list={["list-label", card.variant === "featured" ? "list-label--adv-featured" : "list-label--adv"]}>
+              {card.advLabel}
+            </span>
+            <ul class="mat-card__list">
+              {card.advantages.map((adv) => (
+                <li class="list-item">
+                  <CircleCheck size={14} class="list-item__icon list-item__icon--check" />
+                  <span>{adv}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Limitations -->
+          <div class="mat-card__list-group">
+            <span class:list={["list-label", card.variant === "featured" ? "list-label--lim-featured" : "list-label--lim"]}>
+              {card.limLabel}
+            </span>
+            <ul class="mat-card__list">
+              {card.limitations.map((lim) => (
+                <li class="list-item">
+                  <CircleX size={14} class="list-item__icon list-item__icon--x" />
+                  <span>{lim}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Footer -->
+          <div class="mat-card__footer">
+            <span class:list={["cost-label", card.variant === "featured" && "cost-label--featured"]}>
+              {t.materials.cost_label} <strong>{card.cost}</strong>
+            </span>
+            
+            <a  href={`${prefix}#download`}
+              class:list={["spec-link", card.variant === "featured" && "spec-link--featured"]}
+            >
+              {t.materials.get_spec}
+              <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .materials {
+    padding-block: var(--space-16);
+    background: linear-gradient(to bottom, var(--color-slate-50), var(--color-slate-100));
+    border-top: 1px solid var(--color-slate-200);
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  /* Header */
+  .materials__header {
+    text-align: center;
+    max-width: 48rem;
+    margin-inline: auto;
+    margin-bottom: var(--space-16);
+  }
+
+  .section-label {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-navy-500);
+    margin-bottom: var(--space-2);
+  }
+
+  .section-title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-extrabold);
+    color: var(--color-navy-800);
+    margin-bottom: var(--space-3);
+  }
+
+  .section-desc {
+    font-size: var(--text-base);
+    color: var(--color-slate-600);
+    font-weight: var(--font-light);
+    line-height: 1.7;
+  }
+
+  /* Grid */
+  .materials__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .materials__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Card base */
+  .mat-card {
+    position: relative;
+    background-color: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-slow);
+    overflow: hidden;
+  }
+
+  .mat-card:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Featured card */
+  .mat-card--featured {
+    background-color: var(--color-navy-900);
+    border: 2px solid var(--color-amber-500);
+    color: white;
+    box-shadow: var(--shadow-md);
+  }
+
+  .mat-card--featured:hover {
+    box-shadow: var(--shadow-xl);
+  }
+
+  /* Badge */
+  .mat-card__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--color-amber-500);
+    color: var(--color-navy-950);
+    font-size: 0.625rem;
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-1) var(--space-3);
+    border-bottom-left-radius: var(--radius-md);
+  }
+
+  /* Card header */
+  .mat-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .mat-card__icon {
+    background-color: #fff7ed;
+    color: var(--color-amber-500);
+    padding: var(--space-3);
+    border-radius: var(--radius-xl);
+  }
+
+  .mat-card__icon--featured {
+    background-color: var(--color-navy-800);
+    color: var(--color-amber-400);
+  }
+
+  .mat-card__fire-class {
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-slate-600);
+    background-color: var(--color-slate-100);
+    border: 1px solid var(--color-slate-200);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+  }
+
+  .mat-card__fire-class--featured {
+    color: var(--color-amber-400);
+    background-color: var(--color-navy-800);
+    border-color: var(--color-steel-700);
+  }
+
+  /* Title */
+  .mat-card__title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-navy-800);
+    margin-bottom: 0;
+  }
+
+  .mat-card--featured .mat-card__title {
+    color: white;
+  }
+
+  .mat-card__subtitle {
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--color-slate-400);
+    margin-top: calc(var(--space-1) * -1);
+  }
+
+  /* Metric */
+  .mat-card__metric {
+    padding-block: var(--space-2);
+    border-top: 1px solid var(--color-slate-100);
+    border-bottom: 1px solid var(--color-slate-100);
+  }
+
+  .mat-card--featured .mat-card__metric {
+    border-color: var(--color-steel-800);
+  }
+
+  .metric-label {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-slate-500);
+    margin-bottom: var(--space-1);
+  }
+
+  .mat-card--featured .metric-label {
+    color: var(--color-slate-400);
+  }
+
+  .metric-value {
+    display: block;
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    font-family: var(--font-mono);
+    color: var(--color-amber-600);
+  }
+
+  .metric-value--featured {
+    color: var(--color-amber-400);
+  }
+
+  /* List groups */
+  .mat-card__list-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .list-label {
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .list-label--adv     { color: var(--color-green-600); }
+  .list-label--lim     { color: var(--color-red-500);   }
+  .list-label--adv-featured { color: var(--color-amber-400); }
+  .list-label--lim-featured { color: var(--color-orange-500); }
+
+  .mat-card__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-slate-600);
+    line-height: 1.5;
+  }
+
+  .mat-card--featured .list-item {
+    color: var(--color-slate-300);
+  }
+
+  .list-item__icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .list-item__icon--check { color: var(--color-green-500); }
+  .list-item__icon--x     { color: var(--color-red-400);   }
+
+  .mat-card--featured .list-item__icon--check {
+    color: var(--color-amber-400);
+  }
+
+  .mat-card--featured .list-item__icon--x {
+    color: var(--color-orange-500);
+  }
+
+  /* Footer */
+  .mat-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-slate-100);
+    margin-top: auto;
+    font-size: var(--text-xs);
+  }
+
+  .mat-card--featured .mat-card__footer {
+    border-color: var(--color-steel-800);
+  }
+
+  .cost-label {
+    color: var(--color-slate-500);
+  }
+
+  .cost-label strong {
+    color: var(--color-slate-800);
+    font-weight: var(--font-semibold);
+  }
+
+  .cost-label--featured {
+    color: var(--color-slate-400);
+  }
+
+  .cost-label--featured strong {
+    color: white;
+  }
+
+  .spec-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-weight: var(--font-bold);
+    color: var(--color-navy-600);
+    transition: color var(--transition-base);
+  }
+
+  .spec-link:hover {
+    color: var(--color-navy-800);
+    text-decoration: underline;
+  }
+
+  .spec-link--featured {
+    color: var(--color-amber-400);
+  }
+
+  .spec-link--featured:hover {
+    color: var(--color-amber-300);
+  }
+</style>

@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "build:prod": "cross-env SITE=https://landing.mequipo.com BASE=/ astro build",
+    "build:test": "cross-env SITE=https://landing.mequipo.com BASE=/landings/compositesanwichpanels/ astro build"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",

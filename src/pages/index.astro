@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/sections/Hero.astro";
 import Finder from "../components/sections/Finder.astro";
 import Comparison from "../components/sections/Comparison.astro";
+import Materials from "../components/sections/Materials.astro";
 import ScrollReveal from "../components/ui/ScrollReveal.astro";
 import { getLang, useTranslations } from "../i18n/utils";
 
@@ -17,5 +18,6 @@ const t = useTranslations(lang);
     <Hero t={t} lang={lang} />
     <Finder t={t} lang={lang} />
     <Comparison t={t} lang={lang} />
+    <Materials t={t} lang={lang} />
   </main>
 </BaseLayout>
