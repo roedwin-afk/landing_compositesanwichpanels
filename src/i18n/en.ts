@@ -267,10 +267,46 @@ export const en = {
     copyright: "© 2026 compositesandwichpanels.com – technical datasheets available on request.",
     compliance: "Compliance: ISO 9001, EN 14509 Certified Production Standards",
   },
+  faq: {
+    label: "Technical Q&A",
+    title: "Frequently Asked Questions",
+    description:
+      "Technical answers to the most common questions about PUR, PIR, and Rockwool sandwich panel cores.",
+    items: [
+      {
+        q: "What is the difference between PUR and PIR cores?",
+        a: "Both are rigid polymer foams with similar thermal conductivity, but PIR has a higher isocyanurate content, forming a carbonaceous char layer when exposed to fire. This gives PIR significantly better fire resistance (Euroclass B vs E/F for PUR) and a higher continuous service temperature of ~120°C vs ~80°C for PUR.",
+      },
+      {
+        q: "When should I choose Rockwool over PIR?",
+        a: "Choose Rockwool when fire separation is the primary requirement. Rockwool is non-combustible (Euroclass A1), withstands continuous temperatures up to 750°C, and maintains structural integrity above 1000°C. It is mandatory in many passive fire protection wall assemblies and high-risk industrial environments.",
+      },
+      {
+        q: "Can sandwich panels with PUR cores meet insurance requirements?",
+        a: "PUR cores are classified Euroclass E or F, which typically requires active fire suppression systems (sprinklers) to meet FM Global or insurance underwriter standards. For facilities where sprinklers are not feasible, PIR or Rockwool cores are strongly recommended.",
+      },
+      {
+        q: "How does thermal conductivity affect panel thickness?",
+        a: "Lower lambda (λ) values allow thinner panels to achieve the same U-value. PIR at λ = 0.020 W/m·K requires less thickness than Rockwool at λ ≈ 0.040 W/m·K to reach the same thermal resistance. This directly impacts structural load, installation cost, and usable interior space.",
+      },
+      {
+        q: "Are these panels suitable for cold storage applications?",
+        a: "Yes. PUR and PIR cores are ideal for cold storage due to their low thermal conductivity, closed-cell structure that resists moisture ingress, and strong adhesion to metal facings. PIR is preferred for facilities requiring both thermal efficiency and improved fire classification.",
+      },
+      {
+        q: "What international certifications should I verify before purchasing?",
+        a: "Key certifications to verify include EN 13501-1 (EU fire reaction class), FM 4880/4881 (FM Global industrial approval), ASTM E84 / NFPA 285 (USA), and BS 476 Parts 6 & 7 (UK). Always request the official Declaration of Performance (DoP) and CE marking documentation from the manufacturer.",
+      },
+    ],
+  },
 } as const;
 
 export type DeepString<T> = {
-  [K in keyof T]: T[K] extends object ? DeepString<T[K]> : string;
+  [K in keyof T]: T[K] extends Array<infer U>
+    ? Array<DeepString<U>>
+    : T[K] extends object
+    ? DeepString<T[K]>
+    : string;
 };
 
 export type TranslationKeys = DeepString<typeof en>;

@@ -4,6 +4,9 @@ import Hero from "../components/sections/Hero.astro";
 import Finder from "../components/sections/Finder.astro";
 import Comparison from "../components/sections/Comparison.astro";
 import Materials from "../components/sections/Materials.astro";
+import Performance from "../components/sections/Performance.astro";
+import Standards from "../components/sections/Standards.astro";
+import Faq from "../components/sections/Faq.astro";
 import ScrollReveal from "../components/ui/ScrollReveal.astro";
 import { getLang, useTranslations } from "../i18n/utils";
 
@@ -19,5 +22,8 @@ const t = useTranslations(lang);
     <Finder t={t} lang={lang} />
     <Comparison t={t} lang={lang} />
     <Materials t={t} lang={lang} />
+    <Performance t={t} lang={lang} />
+    <Standards t={t} lang={lang} />
+    <Faq t={t} lang={lang} />
   </main>
 </BaseLayout>

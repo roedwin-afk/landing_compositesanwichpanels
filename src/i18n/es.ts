@@ -269,4 +269,36 @@ export const es: TranslationKeys = {
     copyright: "© 2026 compositesandwichpanels.com – fichas técnicas disponibles bajo solicitud.",
     compliance: "Cumplimiento: Estándares de Producción Certificados ISO 9001, EN 14509",
   },
+  faq: {
+    label: "Preguntas y Respuestas Técnicas",
+    title: "Preguntas Frecuentes",
+    description:
+      "Respuestas técnicas a las preguntas más comunes sobre los núcleos PUR, PIR y Rockwool para paneles sándwich.",
+    items: [
+      {
+        q: "¿Cuál es la diferencia entre los núcleos PUR y PIR?",
+        a: "Ambos son espumas poliméricas rígidas con conductividad térmica similar, pero el PIR tiene mayor contenido de isocianurato, formando una capa carbonosa al exponerse al fuego. Esto le otorga al PIR una resistencia al fuego significativamente mejor (Euroclass B frente a E/F del PUR) y una temperatura de servicio continuo superior de ~120°C frente a ~80°C del PUR.",
+      },
+      {
+        q: "¿Cuándo debo elegir Rockwool en lugar de PIR?",
+        a: "Elige Rockwool cuando la separación contra incendios sea el requisito principal. El Rockwool es no combustible (Euroclass A1), soporta temperaturas continuas de hasta 750°C y mantiene su integridad estructural por encima de 1000°C. Es obligatorio en muchos sistemas de muros de protección pasiva contra incendios y entornos industriales de alto riesgo.",
+      },
+      {
+        q: "¿Pueden los paneles sándwich con núcleo PUR cumplir los requisitos de los seguros?",
+        a: "Los núcleos PUR se clasifican como Euroclass E o F, lo que generalmente requiere sistemas activos de supresión de incendios (rociadores) para cumplir con los estándares de FM Global o los aseguradores. Para instalaciones donde los rociadores no son viables, se recomiendan firmemente los núcleos PIR o Rockwool.",
+      },
+      {
+        q: "¿Cómo afecta la conductividad térmica al espesor del panel?",
+        a: "Los valores lambda (λ) más bajos permiten paneles más delgados para alcanzar el mismo valor U. El PIR con λ = 0.020 W/m·K requiere menor espesor que el Rockwool con λ ≈ 0.040 W/m·K para lograr la misma resistencia térmica. Esto impacta directamente en la carga estructural, el coste de instalación y el espacio interior útil.",
+      },
+      {
+        q: "¿Son estos paneles adecuados para aplicaciones de cámara frigorífica?",
+        a: "Sí. Los núcleos PUR y PIR son ideales para cámaras frigoríficas gracias a su baja conductividad térmica, estructura de celda cerrada que resiste la entrada de humedad y fuerte adhesión a las chapas metálicas. El PIR es preferible para instalaciones que requieren tanto eficiencia térmica como una mejor clasificación de fuego.",
+      },
+      {
+        q: "¿Qué certificaciones internacionales debo verificar antes de comprar?",
+        a: "Las certificaciones clave a verificar incluyen EN 13501-1 (clase de reacción al fuego UE), FM 4880/4881 (aprobación industrial FM Global), ASTM E84 / NFPA 285 (EE.UU.) y BS 476 Partes 6 y 7 (Reino Unido). Solicite siempre la Declaración de Prestaciones (DoP) oficial y la documentación de marcado CE al fabricante.",
+      },
+    ],
+  },
 };
