@@ -1,0 +1,347 @@
+---
+import type { TranslationKeys } from "../../i18n/en";
+import type { Lang } from "../../i18n/utils";
+import { Phone, Mail, FileDown, MessageSquare } from "lucide-astro";
+
+interface Props {
+  t: TranslationKeys;
+  lang: Lang;
+}
+
+const { t, lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const prefix = lang === "es" ? `${base}es/` : base;
+---
+
+<section id="cta" class="cta technical-grid">
+  <div class="cta__radial"></div>
+  <div class="container">
+
+    <div class="cta__inner">
+
+      <!-- Top: badge + heading + desc -->
+      <div class="cta__heading reveal">
+        <span class="cta__label">{t.cta.label}</span>
+        <h2 class="cta__title">
+          {t.cta.title_1}<br />
+          <span class="cta__title--gradient">{t.cta.title_2}</span>
+        </h2>
+        <p class="cta__desc">{t.cta.description}</p>
+      </div>
+
+      <!-- Stats row -->
+      <div class="cta__stats reveal reveal-delay-1">
+        <div class="cta-stat">
+          <span class="cta-stat__value">{t.cta.stat_1_value}</span>
+          <span class="cta-stat__label">{t.cta.stat_1_label}</span>
+        </div>
+        <div class="cta-stat__divider"></div>
+        <div class="cta-stat">
+          <span class="cta-stat__value">{t.cta.stat_2_value}</span>
+          <span class="cta-stat__label">{t.cta.stat_2_label}</span>
+        </div>
+        <div class="cta-stat__divider"></div>
+        <div class="cta-stat">
+          <span class="cta-stat__value">{t.cta.stat_3_value}</span>
+          <span class="cta-stat__label">{t.cta.stat_3_label}</span>
+        </div>
+      </div>
+
+      <!-- CTA buttons -->
+      <div class="cta__buttons reveal reveal-delay-2">
+        <a href={`${prefix}#comparison`} class="btn-primary">
+          <MessageSquare size={16} />
+          {t.cta.primary}
+        </a>
+        <a href={`${prefix}#materials`} class="btn-secondary">
+          <FileDown size={16} />
+          {t.cta.secondary}
+        </a>
+      </div>
+
+      <!-- Contact info -->
+      <div class="cta__contact reveal reveal-delay-3">
+        <a href={`tel:${t.cta.phone}`} class="contact-item">
+          <span class="contact-item__icon">
+            <Phone size={16} />
+          </span>
+          <div>
+            <span class="contact-item__label">{t.cta.phone_label}</span>
+            <span class="contact-item__value">{t.cta.phone}</span>
+          </div>
+        </a>
+
+        <div class="contact-divider"></div>
+
+        <a href={`mailto:${t.cta.email}`} class="contact-item">
+          <span class="contact-item__icon">
+            <Mail size={16} />
+          </span>
+          <div>
+            <span class="contact-item__label">{t.cta.email_label}</span>
+            <span class="contact-item__value">{t.cta.email}</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    padding-block: var(--space-20) var(--space-24);
+    background: linear-gradient(to bottom, var(--color-navy-950), var(--color-navy-900));
+    color: white;
+    overflow: hidden;
+    border-top: 1px solid var(--color-steel-800);
+  }
+
+  .cta__radial {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top left,  rgba(245, 158, 11, 0.07), transparent 40%),
+      radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.05), transparent 40%);
+    pointer-events: none;
+  }
+
+  /* Inner layout */
+  .cta__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-10);
+    text-align: center;
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  /* Heading block */
+  .cta__heading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .cta__label {
+    display: inline-block;
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    font-weight: var(--font-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-amber-400);
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+  }
+
+  .cta__title {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-extrabold);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 640px) {
+    .cta__title {
+      font-size: var(--text-4xl);
+    }
+  }
+
+  .cta__title--gradient {
+    background: linear-gradient(to right, var(--color-amber-400), var(--color-orange-500));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cta__desc {
+    font-size: var(--text-base);
+    color: var(--color-slate-300);
+    font-weight: var(--font-light);
+    line-height: 1.7;
+    max-width: 36rem;
+    margin-inline: auto;
+  }
+
+  /* Stats */
+  .cta__stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+    padding: var(--space-6) var(--space-8);
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-2xl);
+    width: 100%;
+  }
+
+  .cta-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .cta-stat__value {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-extrabold);
+    font-family: var(--font-mono);
+    color: var(--color-amber-400);
+    line-height: 1;
+  }
+
+  .cta-stat__label {
+    font-size: var(--text-xs);
+    color: var(--color-slate-400);
+    line-height: 1.3;
+  }
+
+  .cta-stat__divider {
+    width: 1px;
+    height: 2.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    .cta-stat__divider {
+      display: none;
+    }
+  }
+
+  /* Buttons */
+  .cta__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+  }
+
+  @media (min-width: 480px) {
+    .cta__buttons {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    background: linear-gradient(to right, var(--color-amber-500), var(--color-orange-500));
+    color: var(--color-navy-950);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    padding: var(--space-3) var(--space-8);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+    transition: opacity var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .btn-primary:hover {
+    opacity: 0.92;
+    box-shadow: 0 8px 32px rgba(245, 158, 11, 0.35);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: 1px solid var(--color-steel-600);
+    color: var(--color-slate-200);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    padding: var(--space-3) var(--space-8);
+    border-radius: var(--radius-lg);
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-navy-800);
+    border-color: var(--color-slate-400);
+  }
+
+  /* Contact row */
+  .cta__contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    width: 100%;
+  }
+
+  @media (min-width: 480px) {
+    .cta__contact {
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    transition: opacity var(--transition-base);
+  }
+
+  .contact-item:hover {
+    opacity: 0.8;
+  }
+
+  .contact-item__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: var(--radius-lg);
+    color: var(--color-amber-400);
+    flex-shrink: 0;
+  }
+
+  .contact-item__label {
+    display: block;
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    color: var(--color-slate-400);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .contact-item__value {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: white;
+  }
+
+  .contact-divider {
+    width: 1px;
+    height: 2.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    .contact-divider {
+      width: 4rem;
+      height: 1px;
+    }
+  }
+</style>

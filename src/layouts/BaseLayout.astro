@@ -1,5 +1,6 @@
 ---
 import Navbar from "../components/layout/Navbar.astro";
+import Footer from "../components/layout/Footer.astro";
 import { ClientRouter } from "astro:transitions";
 import type { TranslationKeys } from "../i18n/en";
 import type { Lang } from "../i18n/utils";
@@ -92,6 +93,7 @@ const ogImage = "https://www.compositesandwichpanels.com/og-image.jpg";
   <body>
     <Navbar t={t} lang={lang} />
     <slot />
+    <Footer t={t} lang={lang} />
   </body>
 </html>
 

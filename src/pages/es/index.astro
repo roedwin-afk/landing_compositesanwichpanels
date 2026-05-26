@@ -7,6 +7,7 @@ import Materials from "../../components/sections/Materials.astro";
 import Performance from "../../components/sections/Performance.astro";
 import Standards from "../../components/sections/Standards.astro";
 import Faq from "../../components/sections/Faq.astro";
+import Cta from "../../components/sections/Cta.astro";
 import ScrollReveal from "../../components/ui/ScrollReveal.astro";
 import { getLang, useTranslations } from "../../i18n/utils";
 
@@ -25,5 +26,6 @@ const t = useTranslations(lang);
     <Performance t={t} lang={lang} />
     <Standards t={t} lang={lang} />
     <Faq t={t} lang={lang} />
+    <Cta t={t} lang={lang} />
   </main>
 </BaseLayout>

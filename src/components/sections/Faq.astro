@@ -59,40 +59,46 @@ const { t } = Astro.props;
     const triggers = document.querySelectorAll<HTMLButtonElement>(".faq-item__trigger");
     if (!triggers.length) return;
 
-    triggers.forEach((trigger) => {
+    const closeAll = () => {
+      triggers.forEach(trigger => {
+        trigger.setAttribute("aria-expanded", "false");
+        const body = trigger.nextElementSibling as HTMLElement | null;
+        if (body) body.style.maxHeight = "0px";
+        trigger.closest(".faq-item")?.classList.remove("is-open");
+      });
+    };
+
+    const openItem = (trigger: HTMLButtonElement) => {
+      const body = trigger.nextElementSibling as HTMLElement | null;
+      if (!body) return;
+      trigger.setAttribute("aria-expanded", "true");
+      trigger.closest(".faq-item")?.classList.add("is-open");
+      // Forzar reflow antes de medir
+      body.style.maxHeight = "none";
+      const height = body.scrollHeight;
+      body.style.maxHeight = "0px";
+      requestAnimationFrame(() => {
+        body.style.maxHeight = height + "px";
+      });
+    };
+
+    triggers.forEach(trigger => {
       trigger.addEventListener("click", () => {
         const isOpen = trigger.getAttribute("aria-expanded") === "true";
-        const body = trigger.nextElementSibling as HTMLElement;
-
-        // Close all
-        triggers.forEach((t) => {
-          t.setAttribute("aria-expanded", "false");
-          const b = t.nextElementSibling as HTMLElement;
-          if (b) b.style.maxHeight = "0px";
-          t.closest(".faq-item")?.classList.remove("is-open");
-        });
-
-        // Open clicked if it was closed
-        if (!isOpen) {
-          trigger.setAttribute("aria-expanded", "true");
-          trigger.closest(".faq-item")?.classList.add("is-open");
-          if (body) body.style.maxHeight = body.scrollHeight + "px";
-        }
+        closeAll();
+        if (!isOpen) openItem(trigger);
       });
     });
 
-    // Open first item by default
-    const first = triggers[0];
-    if (first) {
-      first.setAttribute("aria-expanded", "true");
-      first.closest(".faq-item")?.classList.add("is-open");
-      const body = first.nextElementSibling as HTMLElement;
-      if (body) body.style.maxHeight = body.scrollHeight + "px";
-    }
+    // Abrir primero por defecto
+    if (triggers[0]) openItem(triggers[0]);
   }
 
-  initFaq();
-  document.addEventListener("astro:page-load", initFaq);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFaq);
+  } else {
+    initFaq();
+  }
 </script>
 
 <style>

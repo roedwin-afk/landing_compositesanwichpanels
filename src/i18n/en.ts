@@ -299,6 +299,25 @@ export const en = {
       },
     ],
   },
+  cta: {
+    label: "Ready to Specify?",
+    title_1: "Find the Right Core",
+    title_2: "for Your Next Project",
+    description:
+      "Talk directly with a technical engineer. Get a material recommendation tailored to your thermal, structural, and fire compliance requirements.",
+    primary: "Request a Technical Consultation",
+    secondary: "Download Spec Sheet",
+    stat_1_value: "3",
+    stat_1_label: "Core materials compared",
+    stat_2_value: "6+",
+    stat_2_label: "Global fire standards covered",
+    stat_3_value: "Free",
+    stat_3_label: "Technical consultation",
+    phone_label: "Direct B2B Line",
+    phone: "+1 (800) 555-CORE-SPEC",
+    email_label: "Technical Inquiries",
+    email: "engineering@compositesandwichpanels.com",
+  },
 } as const;
 
 export type DeepString<T> = {

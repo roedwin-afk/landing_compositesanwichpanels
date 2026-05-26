@@ -301,4 +301,23 @@ export const es: TranslationKeys = {
       },
     ],
   },
+  cta: {
+    label: "¿Listo para Especificar?",
+    title_1: "Encuentra el Núcleo Correcto",
+    title_2: "para tu Próximo Proyecto",
+    description:
+      "Habla directamente con un ingeniero técnico. Obtén una recomendación de material adaptada a tus requisitos térmicos, estructurales y de cumplimiento contra incendios.",
+    primary: "Solicitar Consulta Técnica",
+    secondary: "Descargar Ficha Técnica",
+    stat_1_value: "3",
+    stat_1_label: "Materiales de núcleo comparados",
+    stat_2_value: "6+",
+    stat_2_label: "Normativas globales de fuego cubiertas",
+    stat_3_value: "Gratis",
+    stat_3_label: "Consulta técnica",
+    phone_label: "Línea Directa B2B",
+    phone: "+1 (800) 555-CORE-SPEC",
+    email_label: "Consultas Técnicas",
+    email: "engineering@compositesandwichpanels.com",
+  },
 };
