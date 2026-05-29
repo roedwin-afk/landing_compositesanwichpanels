@@ -1,0 +1,46 @@
+---
+import { BlogList } from "astro-blog-kit/components";
+import { createWPClient, getStaticPathsForPages } from "astro-blog-kit/utils";
+import config from "../../../../blog.config";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const wp = createWPClient(config.wpUrl);
+  const posts = await wp.getAllPosts();
+  return getStaticPathsForPages(posts, { postsPerPage: config.postsPerPage ?? 5 });
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+
+const bt = {
+  blog: {
+    tagline: "Our Blog",
+    title_line1: "Latest",
+    title_line2: "Articles",
+    description: "Welcome to our blog.",
+    btncta: "Read more",
+    btn_prev: "Previous",
+    btn_next: "Next",
+  },
+};
+
+import { getLang, useTranslations } from "../../../i18n/utils";
+
+const base = import.meta.env.BASE_URL;
+const lang = getLang(Astro.url, base);
+const t = useTranslations(lang);
+---
+
+<BaseLayout t={t} lang={lang}>
+  <BlogList
+    posts={posts}
+    currentPage={currentPage}
+    totalPages={totalPages}
+    basePath={`${base}blog/page/`}
+    blogBase={`${base}blog/`}
+    dateLocale={config.locale ?? "en"}
+    t={bt}
+    locale={config.locale ?? "en"}
+    layout={config.defaultLayout ?? "magazine"}
+  />
+</BaseLayout>

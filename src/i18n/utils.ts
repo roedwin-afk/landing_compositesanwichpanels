@@ -38,11 +38,14 @@ export function useTranslations(lang: Lang): TranslationKeys {
  * Inglés es la ruta raíz, español usa prefijo /es/.
  */
 export function getAlternatePath(url: URL, base: string = "/"): string {
-  const pathname = url.pathname.replace(base, "") || "";
+  const pathname = url.pathname.replace(base, "");
 
+  // console.log("fuera", {url});
   if (pathname.startsWith("es/") || pathname === "es") {
     // Estamos en ES → devolver ruta EN
     const enPath = pathname.replace(/^es\/?/, "") || "";
+    
+    // console.log("dentro", {enPath});
     return `${base}${enPath}`;
   } else {
     // Estamos en EN → devolver ruta ES
