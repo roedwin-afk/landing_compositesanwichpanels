@@ -5,6 +5,7 @@ import { ClientRouter } from "astro:transitions";
 import type { TranslationKeys } from "../i18n/en";
 import type { Lang } from "../i18n/utils";
 import { getAlternatePath } from "../i18n/utils";
+import ScrollReveal from "../components/ui/ScrollReveal.astro";
 
 interface Props {
   t: TranslationKeys;
@@ -28,6 +29,10 @@ const pathname = Astro.url.pathname.replace(base, "") || "";
 const isContactPage = pathname === "contact" || pathname === "es/contact";
 
 const ogImage = "https://www.compositesandwichpanels.com/og-image.jpg";
+
+
+//test
+//const isContactPage = Astro.url.pathname.includes("/contact");
 ---
 
 <!doctype html>
@@ -92,6 +97,7 @@ const ogImage = "https://www.compositesandwichpanels.com/og-image.jpg";
   </head>
 
   <body>
+    <ScrollReveal />
     <Navbar t={t} lang={lang} />
     <slot />
     <Footer t={t} lang={lang} />
