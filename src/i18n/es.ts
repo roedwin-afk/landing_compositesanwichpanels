@@ -12,7 +12,7 @@ export const es: TranslationKeys = {
     comparison: "Datos Técnicos",
     performance: "Perfil Térmico",
     standards: "Certificaciones",
-    cta: "Pack Técnico",
+    cta: "Contáctanos",
     blog: "Blog",
   },
   hero: {
@@ -320,5 +320,16 @@ export const es: TranslationKeys = {
     phone: "+1 (800) 555-CORE-SPEC",
     email_label: "Consultas Técnicas",
     email: "engineering@compositesandwichpanels.com",
+  },
+  contact_page: {
+    label: "Contáctanos",
+    title: "Contacta a Nuestro Equipo Técnico",
+    description: "Nuestros ingenieros estructurales están listos para ayudarte con tus cálculos de carga y especificaciones de aislamiento.",
+    phone: "+52 55 9990 3546",
+    email: "engineering@compositesandwichpanels.com",
+    address: "Avenida Presidente Masaryk No. 61, Int. 901, Polanco V Sección, C.P. 11560, Miguel Hidalgo, Mexico City, Mexico",
+    phone_label: "Teléfono",
+    email_label: "Correo",
+    address_label: "Dirección",
   },
 };

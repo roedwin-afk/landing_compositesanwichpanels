@@ -10,7 +10,7 @@ export const en = {
     comparison: "Technical Data",
     performance: "Thermal Profile",
     standards: "Certifications",
-    cta: "Technical Pack",
+    cta: "Contact Us",
     blog: "Blog",
   },
   hero: {
@@ -319,14 +319,25 @@ export const en = {
     email_label: "Technical Inquiries",
     email: "engineering@compositesandwichpanels.com",
   },
+  contact_page: {
+    label: "Get In Touch",
+    title: "Contact Our Technical Team",
+    description: "Our structural engineers are ready to assist with your load calculations and insulation specifications.",
+    phone: "+52 55 9990 3546",
+    email: "engineering@compositesandwichpanels.com",
+    address: "Avenida Presidente Masaryk No. 61, Int. 901, Polanco V Sección, C.P. 11560, Miguel Hidalgo, Mexico City, Mexico",
+    phone_label: "Phone",
+    email_label: "Email",
+    address_label: "Address",
+  },
 } as const;
 
 export type DeepString<T> = {
   [K in keyof T]: T[K] extends Array<infer U>
-    ? Array<DeepString<U>>
-    : T[K] extends object
-    ? DeepString<T[K]>
-    : string;
+  ? Array<DeepString<U>>
+  : T[K] extends object
+  ? DeepString<T[K]>
+  : string;
 };
 
 export type TranslationKeys = DeepString<typeof en>;

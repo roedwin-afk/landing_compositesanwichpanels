@@ -23,6 +23,10 @@ const alternateURL = `https://www.compositesandwichpanels.com${alternatePath}`;
 
 const pageTitle = title ?? t.site.name;
 const pageDescription = description ?? t.site.description;
+
+const pathname = Astro.url.pathname.replace(base, "") || "";
+const isContactPage = pathname === "contact" || pathname === "es/contact";
+
 const ogImage = "https://www.compositesandwichpanels.com/og-image.jpg";
 ---
 
@@ -91,8 +95,69 @@ const ogImage = "https://www.compositesandwichpanels.com/og-image.jpg";
     <Navbar t={t} lang={lang} />
     <slot />
     <Footer t={t} lang={lang} />
+    {
+      !isContactPage && (
+        <a
+          href={lang === "es" ? `${base}es/contact` : `${base}contact`}
+          class="fab"
+        >
+          {t.contact.button_label}
+        </a>
+      )
+    }
+    <div id="toast" class="toast" role="alert" aria-live="polite">
+      <span class="toast__icon">✓</span>
+      <span id="toast-message" class="toast__message"></span>
+    </div>
   </body>
 </html>
+
+<script>
+  function showToast(message: string, duration: number = 4000) {
+    const toast = document.getElementById("toast");
+    const toastMessage = document.getElementById("toast-message");
+    if (!toast || !toastMessage) return;
+
+    toastMessage.textContent = message;
+    toast.removeAttribute("hidden");
+
+    requestAnimationFrame(() => {
+      toast.classList.add("toast--visible");
+    });
+
+    setTimeout(() => {
+      toast.classList.remove("toast--visible");
+      setTimeout(() => toast.setAttribute("hidden", ""), 300);
+    }, duration);
+  }
+</script>
+<script is:inline>
+  function showToast(message, duration) {
+    duration = duration || 4000;
+    const toast = document.getElementById("toast");
+    const toastMessage = document.getElementById("toast-message");
+    if (!toast || !toastMessage) return;
+
+    toastMessage.textContent = message;
+    toast.removeAttribute("hidden");
+
+    requestAnimationFrame(() => {
+      toast.classList.add("toast--visible");
+    });
+
+    setTimeout(() => {
+      toast.classList.remove("toast--visible");
+      setTimeout(() => toast.setAttribute("hidden", ""), 300);
+    }, duration);
+  }
+
+  window.showToast = showToast;
+
+  document.addEventListener("astro:page-load", () => {
+    const toast = document.getElementById("toast");
+    toast?.classList.remove("toast--visible");
+  });
+</script>
 
 <style is:global>
   /* ============================================
@@ -365,5 +430,95 @@ const ogImage = "https://www.compositesandwichpanels.com/og-image.jpg";
 
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-navy-600);
+  }
+
+  /* ============================================
+   FLOATING ACTION BUTTON
+============================================ */
+  .fab {
+    position: fixed;
+    bottom: var(--space-6);
+    right: var(--space-6);
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: linear-gradient(
+      to right,
+      var(--color-amber-500),
+      var(--color-orange-500)
+    );
+    color: var(--color-navy-950);
+    font-family: var(--font-sans);
+    font-weight: var(--font-bold);
+    font-size: var(--text-sm);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-xl);
+    transition:
+      transform var(--transition-base),
+      box-shadow var(--transition-base);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .fab:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-2xl);
+  }
+
+  @media (max-width: 640px) {
+    .fab {
+      font-size: var(--text-xs);
+      padding: var(--space-3) var(--space-4);
+      bottom: var(--space-4);
+      right: var(--space-4);
+    }
+  }
+
+  /* ============================================
+   TOAST NOTIFICATION
+============================================ */
+  .toast {
+    position: fixed;
+    top: calc(var(--header-height) + var(--space-2));
+    left: 50%;
+    z-index: 100;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    background-color: var(--color-navy-900);
+    border: 1px solid var(--color-amber-500);
+    color: white;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-2xl);
+    white-space: nowrap;
+    max-width: calc(100vw - var(--space-8));
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-50%) translateY(-12px);
+    transition:
+      opacity var(--transition-slow),
+      transform var(--transition-slow);
+    will-change: opacity, transform;
+  }
+
+  .toast--visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  .toast__icon {
+    color: var(--color-amber-500);
+    font-weight: var(--font-bold);
+    font-size: var(--text-base);
+  }
+
+  .toast__message {
+    color: white;
   }
 </style>

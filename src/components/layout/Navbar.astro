@@ -3,6 +3,7 @@ import type { TranslationKeys } from "../../i18n/en";
 import type { Lang } from "../../i18n/utils";
 import NavLinks from "../ui/NavLinks.astro";
 import MobileMenu from "./MobileMenu.astro";
+import { Layers, Globe, MessageSquare  } from "lucide-astro";
 
 interface Props {
     t: TranslationKeys;
@@ -29,20 +30,7 @@ const alternateLang = lang === "en" ? "es" : "en";
             <!-- Brand -->
             <a href={prefix} class="navbar__brand">
                 <div class="brand-icon">
-                    <svg
-                        width="24"
-                        height="24"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                        ></path>
-                    </svg>
+                    <Layers size={24} />
                 </div>
                 <div class="brand-text">
                     <span class="brand-name">COMPOSITE</span>
@@ -65,39 +53,13 @@ const alternateLang = lang === "en" ? "es" : "en";
                     lang={alternateLang}
                     aria-label={`Switch to ${alternateLabel}`}
                 >
-                    <svg
-                        width="14"
-                        height="14"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-                        ></path>
-                    </svg>
+                    <Globe size={14} />
                     {alternateLabel}
                 </a>
 
-                <a href={`${prefix}#download`} class="navbar__cta">
+                <a href={lang === "es" ? `${base}es/contact` : `${base}contact`} class="navbar__cta">
                     {t.nav.cta}
-                    <svg
-                        width="14"
-                        height="14"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                        ></path>
-                    </svg>
+                    <MessageSquare  size={14} />
                 </a>
 
                 <!-- Mobile Hamburger -->

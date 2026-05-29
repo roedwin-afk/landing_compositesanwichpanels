@@ -1,6 +1,7 @@
 ---
 import type { TranslationKeys } from "../../i18n/en";
 import type { Lang } from "../../i18n/utils";
+import { Download, BarChart2 } from "lucide-astro";
 
 interface Props {
   t: TranslationKeys;
@@ -40,19 +41,20 @@ const coreVisualData = {
 };
 
 const coreDataJSON = JSON.stringify(coreVisualData);
+const currentLang = lang;
 
-
-const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${base}files/technical-comparison.pdf`;
+const fileName =
+  lang === "es"
+    ? `${base}files/comparativa-tecnica.pdf`
+    : `${base}files/technical-comparison.pdf`;
 ---
 
 <section class="hero technical-grid">
   <div class="hero__radial"></div>
   <div class="container">
     <div class="hero__grid">
-
       <!-- Left Content -->
       <div class="hero__content">
-
         <!-- Badge -->
         <div class="hero__badge reveal">
           <span class="badge__dot">
@@ -77,17 +79,11 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
         <div class="hero__ctas reveal reveal-delay-3">
           <a href={fileName} download class="cta-primary">
             {t.hero.cta_primary}
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
+            <Download size={16} />
           </a>
           <a href={`${prefix}#comparison`} class="cta-secondary">
             {t.hero.cta_secondary}
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
+            <BarChart2 size={16} />
           </a>
         </div>
 
@@ -111,7 +107,6 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
       <!-- Right Visual -->
       <div class="hero__visual reveal reveal-delay-2">
         <div class="visual-card">
-
           <!-- Technical label -->
           <span class="visual-card__label">{t.hero.visual_label}</span>
 
@@ -134,8 +129,12 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
 
             <!-- Core block -->
             <div class="panel-core" id="visual-core-block">
-              <span class="panel-core__title" id="visual-core-title">PUR CORE</span>
-              <span class="panel-core__spec" id="visual-core-spec">λ = 0.022 W/m·K</span>
+              <span class="panel-core__title" id="visual-core-title"
+                >PUR CORE</span
+              >
+              <span class="panel-core__spec" id="visual-core-spec"
+                >λ = 0.022 W/m·K</span
+              >
             </div>
 
             <!-- Bottom sheet -->
@@ -148,18 +147,21 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
           <div class="visual-desc" id="visual-description-box">
             <div class="visual-desc__row">
               <span class="visual-desc__key">Active Selection:</span>
-              <span class="visual-desc__value" id="vis-details-name">{t.materials.pur.title}</span>
+              <span class="visual-desc__value" id="vis-details-name"
+                >{t.materials.pur.title}</span
+              >
             </div>
-            <p class="visual-desc__text" id="vis-details-p">{t.materials.pur.adv_1}</p>
+            <p class="visual-desc__text" id="vis-details-p">
+              {t.materials.pur.adv_1}
+            </p>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<script define:vars={{ coreDataJSON }}>
+<script define:vars={{ coreDataJSON, currentLang  }}>
   const coreVisualData = JSON.parse(coreDataJSON);
 
   function switchVisualCore(type) {
@@ -170,7 +172,8 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
     const detailsName = document.getElementById("vis-details-name");
     const detailsP = document.getElementById("vis-details-p");
 
-    if (!coreBlock || !coreTitle || !coreSpec || !detailsName || !detailsP) return;
+    if (!coreBlock || !coreTitle || !coreSpec || !detailsName || !detailsP)
+      return;
 
     coreBlock.style.backgroundColor = data.color;
     coreBlock.style.boxShadow = data.shadow;
@@ -200,6 +203,20 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
     });
 
     switchVisualCore("pur");
+
+    // Download toast
+    const downloadBtn = document.querySelector(".cta-primary[download]");
+    downloadBtn?.addEventListener("click", () => {
+      if ("showToast" in window) {
+        if (currentLang === "es") {
+          window.showToast(
+            "Descarga iniciada. Revisa tu carpeta de descargas."
+          );
+        } else {
+          window.showToast("Download started. Check your downloads folder.");
+        }
+      }
+    });
   }
 
   initHero();
@@ -209,7 +226,11 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
 <style>
   .hero {
     position: relative;
-    background: linear-gradient(to bottom, var(--color-navy-950), var(--color-navy-900));
+    background: linear-gradient(
+      to bottom,
+      var(--color-navy-950),
+      var(--color-navy-900)
+    );
     color: white;
     padding-block: var(--space-16) var(--space-24);
     overflow: hidden;
@@ -218,7 +239,11 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
   .hero__radial {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 50%);
+    background: radial-gradient(
+      circle at top right,
+      rgba(59, 130, 246, 0.08),
+      transparent 50%
+    );
     pointer-events: none;
   }
 
@@ -286,7 +311,8 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
   }
 
   @keyframes ping {
-    75%, 100% {
+    75%,
+    100% {
       transform: scale(2);
       opacity: 0;
     }
@@ -313,7 +339,11 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
   }
 
   .hero__title--gradient {
-    background: linear-gradient(to right, var(--color-amber-400), var(--color-orange-500));
+    background: linear-gradient(
+      to right,
+      var(--color-amber-400),
+      var(--color-orange-500)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -346,7 +376,11 @@ const fileName = lang === "es" ? `${base}files/comparativa-tecnica.pdf` : `${bas
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    background: linear-gradient(to right, var(--color-amber-500), var(--color-orange-500));
+    background: linear-gradient(
+      to right,
+      var(--color-amber-500),
+      var(--color-orange-500)
+    );
     color: var(--color-navy-950);
     font-weight: var(--font-bold);
     font-size: var(--text-sm);
