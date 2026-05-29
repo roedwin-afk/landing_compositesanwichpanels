@@ -11,6 +11,7 @@ export const en = {
     performance: "Thermal Profile",
     standards: "Certifications",
     cta: "Technical Pack",
+    blog: "Blog",
   },
   hero: {
     badge: "2026 Engineering Specifications Guide",

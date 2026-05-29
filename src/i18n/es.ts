@@ -13,6 +13,7 @@ export const es: TranslationKeys = {
     performance: "Perfil Térmico",
     standards: "Certificaciones",
     cta: "Pack Técnico",
+    blog: "Blog",
   },
   hero: {
     badge: "Guía de Especificaciones de Ingeniería 2026",
