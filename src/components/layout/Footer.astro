@@ -3,6 +3,8 @@ import type { TranslationKeys } from "../../i18n/en";
 import type { Lang } from "../../i18n/utils";
 import NavLinks from "../ui/NavLinks.astro";
 import { Layers } from "lucide-astro";
+import { Image } from "astro:assets";
+import logo from "../../assets/logo.svg";
 
 interface Props {
   t: TranslationKeys;
@@ -17,17 +19,24 @@ const prefix = lang === "es" ? `${base}es/` : base;
 
 <footer class="footer">
   <div class="container">
-
     <!-- Top grid -->
     <div class="footer__grid">
-
       <!-- Brand col -->
       <div class="footer__brand">
         <a href={prefix} class="brand">
           <div class="brand__icon">
             <Layers size={18} />
           </div>
-          <span class="brand__name">COMPOSITE SANDWICH PANELS</span>
+          <Image
+                src={logo}
+                alt="Panel sándwich para techo industrial"
+                width={200}
+                height={50}
+                class="footer__logo-img"
+                format="svg"
+                quality={85}
+                loading="eager"
+            />
         </a>
         <p class="footer__desc">{t.footer.description}</p>
       </div>
@@ -43,12 +52,20 @@ const prefix = lang === "es" ? `${base}es/` : base;
       <div class="footer__col">
         <h4 class="footer__col-title">{t.footer.range_label}</h4>
         <ul class="footer__links">
-          <li><a href={`${prefix}#materials`} class="footer__link">{t.footer.range_1}</a></li>
-          <li><a href={`${prefix}#materials`} class="footer__link">{t.footer.range_2}</a></li>
-          <li><a href={`${prefix}#materials`} class="footer__link">{t.footer.range_3}</a></li>
+          <li>
+            <a href={`${prefix}#materials`} class="footer__link"
+              >{t.footer.range_1}</a>
+          </li>
+          <li>
+            <a href={`${prefix}#materials`} class="footer__link"
+              >{t.footer.range_2}</a>
+          </li>
+          <li>
+            <a href={`${prefix}#materials`} class="footer__link"
+              >{t.footer.range_3}</a>
+          </li>
         </ul>
       </div>
-
     </div>
 
     <!-- Nav links row -->
@@ -61,7 +78,6 @@ const prefix = lang === "es" ? `${base}es/` : base;
       <p class="footer__copyright">{t.footer.copyright}</p>
       <p class="footer__compliance">{t.footer.compliance}</p>
     </div>
-
   </div>
 </footer>
 
@@ -100,6 +116,13 @@ const prefix = lang === "es" ? `${base}es/` : base;
     gap: var(--space-4);
   }
 
+  .footer__logo-img {
+    display: block;
+    height: 3.5rem;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
   .brand {
     display: inline-flex;
     align-items: center;
@@ -107,7 +130,11 @@ const prefix = lang === "es" ? `${base}es/` : base;
   }
 
   .brand__icon {
-    background: linear-gradient(135deg, var(--color-navy-500), var(--color-amber-500));
+    background: linear-gradient(
+      135deg,
+      var(--color-navy-500),
+      var(--color-amber-500)
+    );
     padding: var(--space-1);
     border-radius: var(--radius-sm);
     color: white;
