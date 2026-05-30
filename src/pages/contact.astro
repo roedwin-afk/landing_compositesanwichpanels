@@ -208,58 +208,64 @@ const coords = { lat: 19.4326, lng: -99.1948 };
     </section>
 </BaseLayout>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
 
 <script is:inline>
-  var mapInstance = null;
+    var mapInstance = null;
 
-  function initMap() {
-    var el = document.getElementById("contact-map");
-    if (!el) return;
-    if (typeof L === "undefined") {
-      setTimeout(initMap, 100);
-      return;
+    function initMap() {
+        var el = document.getElementById("contact-map");
+        if (!el) return;
+        if (typeof L === "undefined") {
+            setTimeout(initMap, 100);
+            return;
+        }
+
+        if (mapInstance) {
+            mapInstance.remove();
+            mapInstance = null;
+            el.innerHTML = "";
+        }
+
+        mapInstance = L.map("contact-map", {
+            center: [19.4326, -99.1948],
+            zoom: 15,
+            zoomControl: true,
+            scrollWheelZoom: false,
+        });
+
+        L.tileLayer(
+            "https://{s}.basemaps.cartocdn.com/dark_matter/{z}/{x}/{y}{r}.png",
+            {
+                attribution:
+                    '© <a href="https://carto.com/" style="color:#F59E0B">CARTO</a> © <a href="https://www.openstreetmap.org/copyright" style="color:#F59E0B">OSM</a>',
+                subdomains: "abcd",
+                maxZoom: 20,
+            },
+        ).addTo(mapInstance);
+
+        var icon = L.divIcon({
+            className: "",
+            html: '<div style="position:relative;width:20px;height:20px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;width:32px;height:32px;background:rgba(245,158,11,0.25);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:mppulse 2s infinite;"></div><div style="width:14px;height:14px;background:#F59E0B;border:2px solid #fff;border-radius:50%;box-shadow:0 0 10px rgba(245,158,11,0.8);position:relative;z-index:1;"></div></div><style>@keyframes mppulse{0%{transform:translate(-50%,-50%) scale(1);opacity:0.6}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}</style>',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+        });
+
+        L.marker([19.4326, -99.1948], { icon })
+            .addTo(mapInstance)
+            .bindPopup(
+                '<div style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:#0B2B4A;line-height:1.6;padding:2px 4px;"><strong style="color:#F59E0B;font-size:12px">Composite Sandwich Panels</strong><br/>Masaryk 61, Int. 901<br/>Polanco V, 11560, CDMX</div>',
+            )
+            .openPopup();
     }
 
-    if (mapInstance) {
-      mapInstance.remove();
-      mapInstance = null;
-      el.innerHTML = "";
-    }
-
-    mapInstance = L.map("contact-map", {
-      center: [19.4326, -99.1948],
-      zoom: 15,
-      zoomControl: true,
-      scrollWheelZoom: false,
-    });
-
-    L.tileLayer(
-      "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
-      {
-        attribution: '© <a href="https://stadiamaps.com/" style="color:#F59E0B">Stadia Maps</a>',
-        maxZoom: 20,
-      }
-    ).addTo(mapInstance);
-
-    var icon = L.divIcon({
-      className: "",
-      html: '<div style="position:relative;width:20px;height:20px;display:flex;align-items:center;justify-content:center;"><div style="position:absolute;width:32px;height:32px;background:rgba(245,158,11,0.25);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:mppulse 2s infinite;"></div><div style="width:14px;height:14px;background:#F59E0B;border:2px solid #fff;border-radius:50%;box-shadow:0 0 10px rgba(245,158,11,0.8);position:relative;z-index:1;"></div></div><style>@keyframes mppulse{0%{transform:translate(-50%,-50%) scale(1);opacity:0.6}100%{transform:translate(-50%,-50%) scale(2.2);opacity:0}}</style>',
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
-    });
-
-    L.marker([19.4326, -99.1948], { icon })
-      .addTo(mapInstance)
-      .bindPopup(
-        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:11px;color:#0B2B4A;line-height:1.6;padding:2px 4px;"><strong style="color:#F59E0B;font-size:12px">Composite Sandwich Panels</strong><br/>Masaryk 61, Int. 901<br/>Polanco V, 11560, CDMX</div>'
-      )
-      .openPopup();
-  }
-
-  initMap();
-  document.addEventListener("astro:page-load", initMap);
+    initMap();
+    document.addEventListener("astro:page-load", initMap);
 </script>
 
 <style>
